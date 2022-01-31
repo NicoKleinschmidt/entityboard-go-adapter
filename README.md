@@ -4,7 +4,7 @@ A Go package to help create entityboard-adapters.
 
 Manifest Template
 
-```json
+```js
 {
     "ID": "company.plugin",   // Unique id of the plugin
     "Name": "Example Plugin", // Display name

@@ -1,0 +1,1 @@
+# Entityboard-Go-Adapter

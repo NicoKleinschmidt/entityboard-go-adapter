@@ -8,6 +8,7 @@ Manifest Template
 {
     "ID": "company.plugin",   // Unique id of the plugin
     "Name": "Example Plugin", // Display name
+    "NamedPipe": "\\.\pipe\example_pipe",
 
     // Item Types provided by this plugin
     "Types": [
@@ -55,8 +56,10 @@ Commands are handled per item type or in default handlers.
 ### Available Commands
 
 - get-items: []int: return all items for the ids in the data. If an item is missing, it will be ignored.
+(Does not use Id field)
 
-- enumerate-items: {limit int, offset int, type string}: returns limit (or less if less available) amount of items, in application defined order, offset by offset. Only returns items of the specified type.
+- enumerate-items: {limit int, offset int}: returns limit (or less if less available) amount of items, in application defined order, offset by offset.
+(Does not use Id field)
 
 - activate: int: activates the item with the specified id. Doesn't return anything except for errors.
 

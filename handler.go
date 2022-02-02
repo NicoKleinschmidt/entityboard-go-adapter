@@ -25,6 +25,16 @@ type commandRawData struct {
 	RawData []byte
 }
 
+func (cmd *commandRawData) UnmarshalJSON(data []byte) (err error) {
+	if err := json.Unmarshal(data, &cmd.Command); err != nil {
+		return err
+	}
+
+	cmd.RawData, err = json.Marshal(cmd.Noun)
+
+	return
+}
+
 // commandHandler is the handler for incomming connections from the named pipe.
 // This should be called as a goroutine for all accepted connections.
 //
@@ -43,7 +53,6 @@ func (pl Plugin) commandHandler(conn net.Conn) {
 
 		var cmd commandRawData
 
-		// TODO: Add custom Unmarshaler to commandRawData, that remarshals the 'Data' field to the 'RawData' field
 		if err := json.Unmarshal(msg[:len(msg)-1], &cmd); err != nil {
 			WriteError(conn, err)
 			continue
@@ -65,7 +74,7 @@ func (pl Plugin) commandHandler(conn net.Conn) {
 // findAndCallHandler finds and calls the correct handler function for the passed command.
 // returns an error if the itemType specified doesn't exist.
 func (pl Plugin) findAndCallHandler(cmd commandRawData) (interface{}, error) {
-	if itemType, ok := pl.ItemTypes[cmd.ItemTypeId]; ok {
+	if itemType, ok := pl.ItemTypes[cmd.ItemType]; ok {
 		if handler, ok := itemType.handlers[cmd.Verb]; ok {
 			return handler.call(cmd)
 		}
@@ -92,7 +101,7 @@ func (h handlerInfo) call(raw commandRawData) (interface{}, error) {
 			return nil, err
 		}
 
-		cmd.Data = dataDst.Interface()
+		cmd.Noun = dataDst.Interface()
 	}
 
 	return h.handlerFunc(cmd)

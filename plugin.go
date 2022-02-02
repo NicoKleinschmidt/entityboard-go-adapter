@@ -1,13 +1,18 @@
 package adapter
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/NicoKleinschmidt/entityboard-go-adapter/pipe"
 )
 
 type Plugin struct {
+	// ID of the plugin
+	ID string
+
+	// Name of the plugin
+	Name string
+
 	// NamedPipe is the path to the named pipe.
 	NamedPipe string
 
@@ -19,14 +24,6 @@ type Plugin struct {
 
 	// defaultHandler will be called if no other handler is found for a command.
 	defaultHandler handlerInfo
-}
-
-type PluginManifest struct {
-}
-
-// CreatePlugin parses the manifest file and generates the plugin.
-func CreatePlugin(manifest PluginManifest) (Plugin, error) {
-	return Plugin{}, fmt.Errorf("not implemented")
 }
 
 // Handler registers a command handler for a specific verb on this plugin.

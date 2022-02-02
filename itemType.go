@@ -1,6 +1,23 @@
 package adapter
 
+type ItemTemplate struct {
+	Name string
+	Data interface{}
+}
+
+// ItemType defines an item type.
+// For more information look up the plugin manifest documentation.
 type ItemType struct {
+	ID      string
+	Name    string
+	Display string
+
+	Actions []string
+
+	Data interface{}
+
+	Templates []ItemTemplate
+
 	handlers map[string]handlerInfo
 }
 

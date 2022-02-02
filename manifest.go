@@ -31,7 +31,7 @@ func ParseManifest(manifest PluginManifest) (*Plugin, error) {
 		plugin.ItemTypes[itemType.ID] = &itemType
 	}
 
-	return nil, nil
+	return &plugin, nil
 }
 
 // ParseManifestFile does the same as ParseManifest, except that its parameter is the json data.

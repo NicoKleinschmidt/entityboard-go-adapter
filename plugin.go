@@ -3,7 +3,7 @@ package adapter
 import (
 	"log"
 
-	"github.com/NicoKleinschmidt/entityboard-go-adapter/pipe"
+	entityipc "github.com/NicoKleinschmidt/entity-ipc"
 )
 
 type Plugin struct {
@@ -13,8 +13,8 @@ type Plugin struct {
 	// Name of the plugin
 	Name string
 
-	// NamedPipe is the path to the named pipe.
-	NamedPipe string
+	// Socket is the address of the socket this plugin listens on
+	Socket string
 
 	// ItemTypeId -> ItemType
 	ItemTypes map[string]*ItemType
@@ -47,19 +47,17 @@ func (pl *Plugin) Handle(verb string, data interface{}, fn CommandHandlerFunc) {
 
 // Start starts the plugin.
 //
-// It starts listening for and accepting connections to the named pipe.
+// It starts listening for and accepting connections to the socket.
 // This function will not return unless an error occurs.
 func (pl *Plugin) Start() error {
-	pipe := pipe.NamedPipe{
-		Path: pl.NamedPipe,
-	}
+	ls, err := entityipc.Listen(pl.Socket)
 
-	if err := pipe.Open(); err != nil {
+	if err != nil {
 		return err
 	}
 
 	for {
-		conn, err := pipe.WaitForConnection()
+		conn, err := ls.AcceptJson()
 
 		if err != nil {
 			log.Println(err)

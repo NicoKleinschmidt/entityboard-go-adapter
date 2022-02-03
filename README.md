@@ -8,7 +8,7 @@ Manifest Template
 {
     "ID": "company.plugin",   // Unique id of the plugin
     "Name": "Example Plugin", // Display name
-    "NamedPipe": "\\.\pipe\example_pipe",
+    "Socker": "example_socket",
 
     // Item Types provided by this plugin
     "Types": [

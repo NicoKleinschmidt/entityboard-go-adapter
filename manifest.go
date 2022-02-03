@@ -6,9 +6,9 @@ import (
 )
 
 type PluginManifest struct {
-	ID        string
-	Name      string
-	NamedPipe string
+	ID     string
+	Name   string
+	Socket string
 
 	Types []ItemType
 }
@@ -20,9 +20,9 @@ func ParseManifest(manifest PluginManifest) (*Plugin, error) {
 	}
 
 	plugin := Plugin{
-		ID:        manifest.ID,
-		Name:      manifest.Name,
-		NamedPipe: manifest.NamedPipe,
+		ID:     manifest.ID,
+		Name:   manifest.Name,
+		Socket: manifest.Socket,
 	}
 
 	plugin.ItemTypes = map[string]*ItemType{}

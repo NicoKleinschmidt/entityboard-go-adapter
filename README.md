@@ -100,7 +100,7 @@ Item ids have to be unique, even if the items have different types.
 - create: {Name string, Data object}: Creates a new item of the specified type, with the specified name and data. The adapter then returns the id of the new item. This command only needs to be implemented, when the CREATE action is defined on the type.
 (Does not use Id field)
 
-- update: {Data object}: Updates the data of the item. This command only needs to be implemented, when the UPDATE action is defined on the type.
+- update: {Name string, Data object}: Updates the data of the item. This command only needs to be implemented, when the UPDATE action is defined on the type.
 
 - delete: Deletes the item. This command only needs to be implemented, when the DELETE action is defined on the type.
 

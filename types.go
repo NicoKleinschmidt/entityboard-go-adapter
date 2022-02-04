@@ -17,9 +17,3 @@ type UpdateData struct {
 	Name string
 	Data interface{}
 }
-
-// UploadData is the noun for upload
-type UploadData struct {
-	File     []byte
-	FileName string
-}

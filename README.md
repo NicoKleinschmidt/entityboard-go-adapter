@@ -22,7 +22,6 @@ Manifest Template
                 "CREATE",
                 "UPDATE",
                 "DELETE",
-                "UPLOAD",
             ],
             // Template of the Datastructure
             // All top-level properties must be defined here
@@ -42,6 +41,36 @@ Manifest Template
     ]
 }
 ```
+
+## ItemType 'Data' property
+
+This property works as a template for the item data.
+The item data can be edited from the UI (if UPDATE or CREATE are defined)
+
+- Number: Accepts any number
+
+- Boolean: Accepts any boolean
+
+- String: 
+    - Special values:
+        - "file": Accepts any file. The actual data is an object an looks like this:
+
+        ```json
+            {
+                "data": "base64 string",
+                "filename": "filename"
+            }
+        ```
+    - Any other value: Accepts any string
+
+- Object:
+    - Empty object {}: Accepts any key value pairs
+    - Non empty object: Acts as a submenu
+
+- Array:
+    - Empty array: ignored
+    - Non empty array: Accepts any number of values of the type of the first item in the array. All following items are ignored
+
 
 ## Display Options
 
@@ -103,5 +132,3 @@ Item ids have to be unique, even if the items have different types.
 - update: {Name string, Data object}: Updates the data of the item. This command only needs to be implemented, when the UPDATE action is defined on the type.
 
 - delete: Deletes the item. This command only needs to be implemented, when the DELETE action is defined on the type.
-
-- upload: {file BSON, fileName string}: Uploads a file to an item. Each upload is associated with an item, specified by id. The file data is passed as BSON, the file name as a string. This command only needs to be implemented, when the UPLOAD action is defined on the type.

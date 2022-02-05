@@ -10,7 +10,7 @@ import (
 type Command struct {
 	// Id is the ItemID of the item, on which this command is called.
 	// If the command is not called on an item (e.g. enumerate-items), this is nil.
-	Id *int
+	Id *uint64
 
 	// ItemType is the ItemType of the targeted items.
 	// I.e. calling enumerate-items will only return items of the type specified here.

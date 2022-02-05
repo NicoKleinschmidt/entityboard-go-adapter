@@ -2,8 +2,8 @@ package adapter
 
 // EnumerateItemsData is the noun for enumerate-items
 type EnumerateItemsData struct {
-	Offset int
-	Limit  int
+	Offset uint64
+	Limit  uint64
 }
 
 // Item represents an instance of an item type.

@@ -9,8 +9,9 @@ type EnumerateItemsData struct {
 // Item represents an instance of an item type.
 // These are the items that get displayed in the UI.
 type Item struct {
-	ID   uint64
-	Name string
+	ID       uint64
+	Name     string
+	ItemType string
 
 	Data interface{}
 }

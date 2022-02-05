@@ -6,14 +6,11 @@ type EnumerateItemsData struct {
 	Limit  int
 }
 
-// CreateData is the noun for create
-type CreateData struct {
+// Item represents an instance of an item type.
+// These are the items that get displayed in the UI.
+type Item struct {
+	ID   uint64
 	Name string
-	Data interface{}
-}
 
-// UpdateData is the noun for update
-type UpdateData struct {
-	Name string
 	Data interface{}
 }

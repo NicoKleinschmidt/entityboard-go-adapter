@@ -78,8 +78,6 @@ func (pl Plugin) findAndCallHandler(cmd commandRawData) (interface{}, error) {
 		if handler, ok := itemType.handlers[cmd.Verb]; ok {
 			return handler.call(cmd)
 		}
-	} else {
-		return nil, fmt.Errorf("404: ItemType not found")
 	}
 
 	if handler, ok := pl.handlers[cmd.Verb]; ok {

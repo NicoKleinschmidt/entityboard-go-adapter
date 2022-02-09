@@ -31,7 +31,8 @@ func ParseManifest(manifest PluginManifest) (*Plugin, error) {
 	plugin.ItemTypes = map[string]*ItemType{}
 
 	for _, itemType := range manifest.Types {
-		plugin.ItemTypes[itemType.ID] = &itemType
+		itemTypeCopy := itemType
+		plugin.ItemTypes[itemType.ID] = &itemTypeCopy
 	}
 
 	return &plugin, nil

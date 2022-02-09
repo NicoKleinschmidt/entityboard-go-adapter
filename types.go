@@ -15,3 +15,9 @@ type Item struct {
 
 	Data interface{}
 }
+
+// Enum should be returned in a slice as a response to get-enum
+type Enum struct {
+	Text  string
+	Value int
+}

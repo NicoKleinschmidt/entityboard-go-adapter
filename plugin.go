@@ -50,6 +50,10 @@ func (pl *Plugin) Handle(verb string, data interface{}, fn CommandHandlerFunc) {
 // It starts listening for and accepting connections to the socket.
 // This function will not return unless an error occurs.
 func (pl *Plugin) Start() error {
+	pl.defaultHandler = handlerInfo{
+		handlerFunc: defaultHandler,
+	}
+
 	ls, err := entityipc.Listen(pl.Socket)
 
 	if err != nil {

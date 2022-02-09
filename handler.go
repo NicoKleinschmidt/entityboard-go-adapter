@@ -106,3 +106,7 @@ func (h handlerInfo) call(raw commandRawData) (interface{}, error) {
 
 	return h.handlerFunc(cmd)
 }
+
+func defaultHandler(cmd Command) (interface{}, error) {
+	return nil, fmt.Errorf("handler not found")
+}

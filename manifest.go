@@ -10,6 +10,9 @@ type PluginManifest struct {
 	Name   string
 	Socket string
 
+	Settings        interface{}
+	DefaultSettings interface{}
+
 	Types []ItemType
 }
 

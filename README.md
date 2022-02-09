@@ -10,6 +10,17 @@ Manifest Template
     "Name": "Example Plugin", // Display name
     "Socket": "example_socket",
 
+    // Settings template
+    // Parsed the same as itemType data template
+    "Settings": {
+
+    },
+
+    // Default values for the settings
+    "DefaultSettings": {
+
+    },
+
     // Item Types provided by this plugin
     "Types": [
         {
@@ -24,7 +35,7 @@ Manifest Template
                 "DELETE",
             ],
             // Template of the Datastructure
-            // All top-level properties must be defined here
+            // Parsed the same as 'Settings'
             "Data": {
                 "FilePath": "string"
             },
@@ -42,35 +53,63 @@ Manifest Template
 }
 ```
 
-## ItemType 'Data' property
+## Settings template format
 
-This property works as a template for the item data.
-The item data can be edited from the UI (if UPDATE or CREATE are defined)
+```json
+{
+    "Key1": "string",
+    "Key2": "number",
+    "Key3": "boolean",
+    "Key4": "object",
+    "Key5": "file",
+    "Key6": "string[]",
+    "Key7": "number[]",
+    "Key8": "boolean[]",
+    "Key9": "object[]",
+    "Key10": "file[]",
+    "Key11": "enum:my_enum",
+    "Key12": "enum[]:my_enum",
+    "SubMenu": {
+        "Key1": "string"
+    }
+}
 
-- Number: Accepts any number
+```
+- string: accepts string values
 
-- Boolean: Accepts any boolean
+- number: accepts number values
 
-- String: 
-    - Special values:
-        - "file": Accepts any file. The actual data is an object an looks like this:
+- boolean: accepts boolean values
 
-        ```json
-            {
-                "data": "base64 string",
-                "filename": "filename"
-            }
-        ```
-    - Any other value: Accepts any string
+- object: key-value pairs
 
-- Object:
-    - Empty object {}: Accepts any key value pairs
-    - Non empty object: Acts as a submenu
+- file: accepts files in this format:
 
-- Array:
-    - Empty array: ignored
-    - Non empty array: Accepts any number of values of the type of the first item in the array. All following items are ignored
+```json
+    {
+        "data": "base64 string",
+        "filename": "filename"
+    }
+```
 
+- arrays: allows multiple values of the defined type
+
+- enum: enums end with an identifier. This identifier is used to query the possible values. This is done by sending a 'get-enum' command to the plugin.
+The command is never associated with an item type (even for the item data template). The noun of this command is a string containing the identifier.
+The plugin should then respond with an array objects like this:
+```json
+[
+    {
+        "Text": "Option 1",
+        "Value": 0
+    },
+    {
+        "Text": "Option 2",
+        "Value": 1
+    }
+]
+```
+When the settings get applied, the objects value for this key will be the value field of the selected option (only the number for single enums, number array for enum arrays). Enum arrays can be used like flags.
 
 ## Display Options
 
@@ -110,11 +149,6 @@ A Command looks like this (JSON)
 ```
 
 ### Notes:
-
-The 'ItemType' field technically redundant for commands that pass an id,
-Since the adapter could determine the type by itself. It is still passed by
-the server since it usually knows the item before calling a command on it.
-
 Item ids have to be unique, even if the items have different types.
 
 ### Available Commands
@@ -132,3 +166,12 @@ Item ids have to be unique, even if the items have different types.
 - update: {Name string, Data object}: Updates the data of the item. This command only needs to be implemented, when the UPDATE action is defined on the type.
 
 - delete: Deletes the item. This command only needs to be implemented, when the DELETE action is defined on the type.
+
+- apply-settings: {Settings}: Applies the settings passed as the noun. The plugin can respond in 3 ways: no response -> nothing happens, "reload" -> the server will reload all items or "restart" -> the server will stop and restart the plugin.
+(Does not use ItemType or Id fields)
+
+- get-settings: {Settings}: Get the current settings.
+(Does not use ItemType or Id fields)
+
+- get-enum: identifier: Get the possible values for the specified enum identifier.
+(Does not use ItemType or Id fields)

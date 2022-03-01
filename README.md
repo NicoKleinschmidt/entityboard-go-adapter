@@ -153,7 +153,7 @@ A Command looks like this (JSON)
 ```
 
 ### Notes:
-Item ids have to be unique, even if the items have different types.
+Item ids have to be unique in each type. Different types can have items with the same id.
 
 ### Available Commands
 

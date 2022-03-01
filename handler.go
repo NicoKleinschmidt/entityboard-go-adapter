@@ -1,12 +1,12 @@
 package adapter
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net"
 	"reflect"
+
+	ipc "github.com/NicoKleinschmidt/entity-ipc"
 )
 
 type handlerInfo struct {
@@ -40,35 +40,20 @@ func (cmd *commandRawData) UnmarshalJSON(data []byte) (err error) {
 //
 // This function will not return until the server ends the connection.
 func (pl Plugin) commandHandler(conn net.Conn) {
-	reader := bufio.NewReader(conn)
 	defer conn.Close()
 
-	for {
-		msg, err := reader.ReadBytes('\000')
+	ipcHandler := ipc.IPC{}
+	ipcHandler.Start(conn)
+
+	ipcHandler.Handle(commandRawData{}, func(cmd interface{}) (interface{}, error) {
+		response, err := pl.findAndCallHandler(cmd.(commandRawData))
 
 		if err != nil {
-			log.Println(err)
-			return
+			return nil, err
 		}
 
-		var cmd commandRawData
-
-		if err := json.Unmarshal(msg[:len(msg)-1], &cmd); err != nil {
-			WriteError(conn, err)
-			continue
-		}
-
-		response, err := pl.findAndCallHandler(cmd)
-
-		if err != nil {
-			WriteError(conn, err)
-			continue
-		}
-
-		if err := WriteJson(conn, response); err != nil {
-			log.Println(err)
-		}
-	}
+		return response, nil
+	})
 }
 
 // findAndCallHandler finds and calls the correct handler function for the passed command.

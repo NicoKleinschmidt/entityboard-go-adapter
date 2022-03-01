@@ -12,21 +12,16 @@ Manifest Template
 
     // Settings template
     // Parsed the same as itemType data template
-    "Settings": {
+    "Settings": [
 
-    },
-
-    // Default values for the settings
-    "DefaultSettings": {
-
-    },
+    ],
 
     // Item Types provided by this plugin
     "Types": [
         {
             "ID": "myItem",         // Id of type. Must be unique per plugin
             "Name": "My Test Item", // Display name
-            "Display": "Default",   // Display position: see 'Display' section below
+            "Component": "button",
 
             // Actions supported by this type
             "Actions": [
@@ -56,25 +51,41 @@ Manifest Template
 ## Settings template format
 
 ```json
-{
-    "Key1": "string",
-    "Key2": "number",
-    "Key3": "boolean",
-    "Key4": "object",
-    "Key5": "file",
-    "Key6": "string[]",
-    "Key7": "number[]",
-    "Key8": "boolean[]",
-    "Key9": "object[]",
-    "Key10": "file[]",
-    "Key11": "enum:my_enum",
-    "Key12": "enum[]:my_enum",
-    "SubMenu": {
-        "Key1": "string"
+[
+    {
+        "field": "exampleString",
+        "label": "Example String",
+        "icon": "",
+        "desc": "Example String Description",
+        "type": "string"
+    },
+    {
+        "label": "More Settings",
+        "icon": "",
+        "desc": "Submenu",
+        "type": [
+            {
+                "field": "exampleEnum",
+                "label": "Example Enum",
+                "icon": "",
+                "desc": "Example Enum Description",
+                "type": "emum:example"
+            },
+            {
+                "field": "submenu.exampleStringArr",
+                "label": "Example String Array",
+                "icon": "",
+                "desc": "Example String Array Description",
+                "type": "string[]"
+            }
+        ]
     }
-}
+]
 
 ```
+
+Possible types: string, number, boolean, object, file, enum + array versions (i.e. string[], enum[]:id).
+
 - string: accepts string values
 
 - number: accepts number values
@@ -94,7 +105,8 @@ Manifest Template
 
 - arrays: allows multiple values of the defined type
 
-- enum: enums end with an identifier. This identifier is used to query the possible values. This is done by sending a 'get-enum' command to the plugin.
+- enum: enums end with an identifier. (enum:identifier, enum[]:identifier)
+This identifier is used to query the possible values. This is done by sending a 'get-enum' command to the plugin.
 The command is never associated with an item type (even for the item data template). The noun of this command is a string containing the identifier.
 The plugin should then respond with an array objects like this:
 ```json
@@ -110,14 +122,6 @@ The plugin should then respond with an array objects like this:
 ]
 ```
 When the settings get applied, the objects value for this key will be the value field of the selected option (only the number for single enums, number array for enum arrays). Enum arrays can be used like flags.
-
-## Display Options
-
-Default: Item is displayed as a regular icon
-
-Options: Item is displayed in the options menu
-
-Hidden: Item is never displayed in UI
 
 ## Commands
 

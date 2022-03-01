@@ -12,6 +12,8 @@ type Item struct {
 	ID       uint64
 	Name     string
 	ItemType string
+	Icon     string
+	Color    string
 
 	Data interface{}
 }

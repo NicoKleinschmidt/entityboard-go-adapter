@@ -1,9 +1,9 @@
 package adapter
 
 import (
+	"errors"
 	"log"
-
-	entityipc "github.com/NicoKleinschmidt/entity-ipc"
+	"net"
 )
 
 type Plugin struct {
@@ -24,6 +24,8 @@ type Plugin struct {
 
 	// defaultHandler will be called if no other handler is found for a command.
 	defaultHandler handlerInfo
+
+	ls net.Listener
 }
 
 // Handler registers a command handler for a specific verb on this plugin.
@@ -54,20 +56,34 @@ func (pl *Plugin) Start() error {
 		handlerFunc: defaultHandler,
 	}
 
-	ls, err := entityipc.Listen(pl.Socket)
+	ls, err := net.ListenUnix("unix", &net.UnixAddr{Name: pl.Socket})
 
 	if err != nil {
 		return err
 	}
 
+	pl.ls = ls
+
 	for {
-		conn, err := ls.AcceptJson()
+		conn, err := ls.Accept()
 
 		if err != nil {
-			log.Println(err)
-			continue
+			if errors.Is(err, net.ErrClosed) {
+				return err
+			} else {
+				log.Println(err)
+				continue
+			}
 		}
 
 		go pl.commandHandler(conn)
 	}
+}
+
+// Close stops the plugin.
+func (pl *Plugin) Close() error {
+	if pl.ls == nil {
+		return nil
+	}
+	return pl.ls.Close()
 }

@@ -43,8 +43,6 @@ func (pl Plugin) commandHandler(conn net.Conn) {
 	defer conn.Close()
 
 	ipcHandler := ipc.IPC{}
-	ipcHandler.Start(conn)
-
 	ipcHandler.Handle(commandRawData{}, func(cmd interface{}) (interface{}, error) {
 		response, err := pl.findAndCallHandler(cmd.(commandRawData))
 
@@ -54,6 +52,8 @@ func (pl Plugin) commandHandler(conn net.Conn) {
 
 		return response, nil
 	})
+
+	ipcHandler.Start(conn)
 }
 
 // findAndCallHandler finds and calls the correct handler function for the passed command.

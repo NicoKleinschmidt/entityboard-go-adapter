@@ -1,2 +1,6 @@
 github.com/NicoKleinschmidt/entity-ipc v0.0.0-20220301205916-f093d160c4bd h1:/imDI52UEuh1yCR+FWiVYTbNkJMjKYwXTfgF7T9K570=
 github.com/NicoKleinschmidt/entity-ipc v0.0.0-20220301205916-f093d160c4bd/go.mod h1:CVbTJ9ew1R7OkZdUAAeyanFIvyMTzYmcB2a1d7JVeV0=
+github.com/NicoKleinschmidt/entity-ipc v0.0.0-20220301212608-07cde2212e07 h1:RUz32uYM7hpQXM4Tu+myG4CrFXH78aTIPT3WgS1F0Bg=
+github.com/NicoKleinschmidt/entity-ipc v0.0.0-20220301212608-07cde2212e07/go.mod h1:CVbTJ9ew1R7OkZdUAAeyanFIvyMTzYmcB2a1d7JVeV0=
+github.com/NicoKleinschmidt/entity-ipc v0.0.0-20220302165309-78d317c3bfa1 h1:uMZWw2AoT0iSq2BdbaEkMCuKknEkmTdi/JALgZxgkcE=
+github.com/NicoKleinschmidt/entity-ipc v0.0.0-20220302165309-78d317c3bfa1/go.mod h1:CVbTJ9ew1R7OkZdUAAeyanFIvyMTzYmcB2a1d7JVeV0=

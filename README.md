@@ -109,6 +109,7 @@ Possible types: string, number, boolean, object, file, enum + array versions (i.
 This identifier is used to query the possible values. This is done by sending a 'get-enum' command to the plugin.
 The command is never associated with an item type (even for the item data template). The noun of this command is a string containing the identifier.
 The plugin should then respond with an array objects like this:
+
 ```json
 [
     {
@@ -121,6 +122,7 @@ The plugin should then respond with an array objects like this:
     }
 ]
 ```
+
 When the settings get applied, the objects value for this key will be the value field of the selected option (only the number for single enums, number array for enum arrays). Enum arrays can be used like flags.
 
 ## Commands
@@ -152,14 +154,15 @@ A Command looks like this (JSON)
 }
 ```
 
-### Notes:
+### Notes
+
 Item ids have to be unique in each type. Different types can have items with the same id.
 
 ### Available Commands
 
 - get-item: Returns the item. If the item doesn't exist, this returns null.
 
-- enumerate-items: {limit int, offset int}: Returns limit (or less if less available) amount of items, in application defined order, offset by offset. 
+- enumerate-items: {limit int, offset int}: Returns limit (or less if less available) amount of items, in application defined order, offset by offset.
 (Does not use Id field)
 
 - activate: int: Activates the item with the specified id. Doesn't return anything except for errors.

@@ -1,8 +1,6 @@
 package adapter
 
 import (
-	"errors"
-	"log"
 	"net"
 )
 
@@ -25,7 +23,24 @@ type Plugin struct {
 	// defaultHandler will be called if no other handler is found for a command.
 	defaultHandler handlerInfo
 
-	ls net.Listener
+	conn net.Conn
+}
+
+type Command struct {
+	// Id is the ItemID of the item, on which this command is called.
+	// If the command is not called on an item (e.g. enumerate-items), this is nil.
+	Id *uint64
+
+	// ItemType is the ItemType of the targeted items.
+	// I.e. calling enumerate-items will only return items of the type specified here.
+	ItemType string
+
+	// Verb is the requested action (i.e enumerate-items or activate)
+	Verb string
+
+	// Noun is additional data passed for some verbs.
+	// E.g { Offset int, Limit int} for enumerate-items or nil for activate.
+	Noun interface{}
 }
 
 // Handler registers a command handler for a specific verb on this plugin.
@@ -49,41 +64,29 @@ func (pl *Plugin) Handle(verb string, data interface{}, fn CommandHandlerFunc) {
 
 // Start starts the plugin.
 //
-// It starts listening for and accepting connections to the socket.
-// This function will not return unless an error occurs.
+// The plugin will try to connect with the server over the socket.
+// This function will not until the connection ends.
 func (pl *Plugin) Start() error {
 	pl.defaultHandler = handlerInfo{
 		handlerFunc: defaultHandler,
 	}
 
-	ls, err := net.ListenUnix("unix", &net.UnixAddr{Name: pl.Socket})
+	conn, err := net.DialUnix("unix", nil, &net.UnixAddr{Name: pl.Socket})
 
 	if err != nil {
 		return err
 	}
 
-	pl.ls = ls
+	pl.conn = conn
+	pl.commandHandler(conn)
 
-	for {
-		conn, err := ls.Accept()
-
-		if err != nil {
-			if errors.Is(err, net.ErrClosed) {
-				return err
-			} else {
-				log.Println(err)
-				continue
-			}
-		}
-
-		go pl.commandHandler(conn)
-	}
+	return nil
 }
 
 // Close stops the plugin.
 func (pl *Plugin) Close() error {
-	if pl.ls == nil {
+	if pl.conn == nil {
 		return nil
 	}
-	return pl.ls.Close()
+	return pl.conn.Close()
 }

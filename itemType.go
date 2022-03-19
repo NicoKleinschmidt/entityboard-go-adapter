@@ -12,6 +12,7 @@ type ItemType struct {
 	Name    string
 	Display string
 
+	Tags    []string
 	Actions []string
 
 	Data interface{}

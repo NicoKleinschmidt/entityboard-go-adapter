@@ -10,10 +10,10 @@ type PluginManifest struct {
 	Name   string
 	Socket string
 
-	Settings        interface{}
-	DefaultSettings interface{}
+	Settings interface{}
 
-	Types []ItemType
+	Images ImagesManifest
+	Types  []ItemType
 }
 
 // ParseManifest parses a plugin manifest and creates a plugin of the configuration.

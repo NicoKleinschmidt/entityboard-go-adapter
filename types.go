@@ -1,13 +1,5 @@
 package adapter
 
-// EnumerateItemsData is the noun for enumerate-items
-type EnumerateItemsData struct {
-	Offset     uint64
-	Limit      uint64
-	SearchText string
-	Tags       []string
-}
-
 // Item represents an instance of an item type.
 // These are the items that get displayed in the UI.
 type Item struct {
@@ -29,4 +21,22 @@ type Item struct {
 type Enum struct {
 	Text  string
 	Value int
+}
+
+// ImagesManifest is the 'Images' object of the plugin manifest.
+type ImagesManifest struct {
+	Static  ImagesStaticManifest
+	Dynamic ImagesDynamicManifest
+}
+
+// ImagesStaticManifest is the 'Static' object of the 'Images' object.
+type ImagesStaticManifest struct {
+	Enabled bool
+	Path    string
+}
+
+// ImagesDynamicManifest is the 'Dynamic' object of the 'Images' object.
+type ImagesDynamicManifest struct {
+	Enabled bool
+	Prefix  string
 }

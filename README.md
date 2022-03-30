@@ -16,6 +16,20 @@ Manifest Template
 
     ],
 
+    "Images": {
+        "Static": {
+            "Enabled": true,
+            "Path": "./img" // Path to a folder containing the images. (Relative to plugin dir)
+        },
+
+        // Dynamic images are not selectable by the user or other plugins,
+        // Since the possible images are not known before requesting one.
+        "Dynamic": {
+            "Enabled": true,
+            "Prefix": "$" // Every image that starts with this prefix will call the get-image handler on the plugin.
+        }
+    },
+
     // Item Types provided by this plugin
     "Types": [
         {
@@ -182,3 +196,6 @@ Item ids have to be unique in each type. Different types can have items with the
 
 - get-enum: identifier: Get the possible values for the specified enum identifier.
 (Does not use ItemType or Id fields)
+
+- get-image: {Path string}: Returns an image (should be a png) as a base64 encoded string.
+The Path does not include the plugin id. (i.e. 'example.plugin/')

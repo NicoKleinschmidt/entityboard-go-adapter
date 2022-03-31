@@ -6,7 +6,7 @@ type Item struct {
 	ID       uint64
 	Name     string
 	ItemType string
-	Icon     string
+	Icon     ItemIconSettings
 	Color    string
 
 	// Tags for this item.
@@ -39,4 +39,10 @@ type ImagesStaticManifest struct {
 type ImagesDynamicManifest struct {
 	Enabled bool
 	Prefix  string
+}
+
+// ItemImageSettings is the 'Image' object of an Item.
+type ItemIconSettings struct {
+	Full  bool
+	Image string
 }
